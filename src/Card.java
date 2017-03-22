@@ -1,8 +1,8 @@
 
 public class Card {
-    String name;
-    String suit;
-    String rank;
+    private String name;
+    private String suit;
+    private String rank;
 
     public Card(String name, String suit, String rank) {
         this.name = name;
