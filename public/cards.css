@@ -1,7 +1,12 @@
-
+body {
+    background-image: url("assets/cards/background_felt.png");
+}
 .card {
     height: 100px;
     width: 71px;
+}
+.back {
+    content: url("assets/cards/card_back.png");
 }
 .ace-of-spades {
 	content: url("assets/cards/ace_of_spades.png");
