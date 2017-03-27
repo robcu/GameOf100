@@ -29,7 +29,9 @@ public class Deck {
         return card;              //will return null card if deck is empty
     }
 
-    public static void main(String[] args) {
-
+    public ArrayList<Card> dealMany(Integer many) {
+        ArrayList<Card> cards = (ArrayList<Card>)deck.subList(0, many - 1);
+        deck.removeAll(cards);
+        return cards;
     }
 }
