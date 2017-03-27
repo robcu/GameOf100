@@ -27,9 +27,9 @@ public class Deck {
         //deck.subList(0, passedInteger)
         deck.remove(0);
         return card;              //will return null card if deck is empty
+    }
 
     public static void main(String[] args) {
 
     }
-}
 }
