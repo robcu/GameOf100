@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Player {
 
     Hand hand;
@@ -51,20 +53,18 @@ public class Player {
         this.teammate = teammate;
     }
 
-    public void makeBid() {
-
+    public void addCatToHand(ArrayList<Card> cat) {
+        ArrayList<Card> playersHand = Hand.playersHand;
+        playersHand.addAll(cat);
     }
 
-
-    declareTrump() {
-
+    public void passCards(ArrayList<Card> passedCards) {
+        ArrayList<Card> playersHand = Hand.playersHand;
+        playersHand.removeAll(passedCards);
     }
 
-    passCards() {
-
-    }
-
-    takeCards() {
-
+    public void takeCards(ArrayList<Card> passedCards) {
+        ArrayList<Card> playersHand = Hand.playersHand;
+        playersHand.addAll(passedCards);
     }
 }

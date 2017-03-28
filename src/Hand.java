@@ -8,12 +8,12 @@ import java.util.ArrayList;
 
 public class Hand {
 
-    ArrayList<Card> playersHand = new ArrayList<>();
+    static ArrayList<Card> playersHand = new ArrayList<>();
 
 
     public void addCard( Card card) {
 
-        playersHand = getHand();
+        playersHand = Player.getHand();
         playersHand.add(card);
     }
 
