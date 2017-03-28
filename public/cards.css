@@ -1,18 +1,34 @@
-/*body {
+body {
     background-image: url("assets/cards/background_felt.png");
-}*/
+}
 table, th, td {
     border: 1px solid black;
     border-collapse: collapse;
-    margin: 10px;
+    margin: 5px;
 }
 table th, table td {
-    padding: 2px; /* Apply cell padding */
+    padding: 1px; /* Apply cell padding */
     text-align: center;
 }
 .card {
     height: 100px;
     width: 71px;
+}
+.trump {
+    height: 120px;
+    width: auto;
+}
+.hearts {
+    content: url("assets/symbols/hearts.png");
+}
+.diamonds {
+    content: url("assets/symbols/diamonds.png");
+}
+.spades {
+    content: url("assets/symbols/spades.png");
+}
+.clubs {
+    content: url("assets/symbols/clubs.png");
 }
 .back {
     content: url("assets/cards/card_back.png");
