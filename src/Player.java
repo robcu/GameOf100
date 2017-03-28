@@ -2,9 +2,9 @@ import java.util.ArrayList;
 
 public class Player {
 
-    Hand hand;
+    ArrayList<Card> playersHand = new ArrayList<>();
 
-    String playerName;
+    int playerName; // indicates player 1, player 2, etc...
 
     int bid;
 
@@ -13,27 +13,26 @@ public class Player {
     public Player() {
     }
 
-    public Player(Hand hand, String playerName, int bid, Player teammate) {
-
-        this.hand = hand;
+    public Player(ArrayList<Card> playersHand, int playerName, int bid, Player teammate) {
+        this.playersHand = playersHand;
         this.playerName = playerName;
         this.bid = bid;
         this.teammate = teammate;
     }
 
-    public Hand getHand() {
-        return hand;
+    public ArrayList<Card> getHand() {
+        return playersHand;
     }
 
-    public void setHand(Hand hand) {
-        this.hand = hand;
+    public void setHand(ArrayList<Card> playersHand) {
+        this.playersHand = playersHand;
     }
 
-    public String getPlayerName() {
+    public int getPlayerName() {
         return playerName;
     }
 
-    public void setPlayerName(String playerName) {
+    public void setPlayerName(int playerName) {
         this.playerName = playerName;
     }
 
@@ -54,17 +53,31 @@ public class Player {
     }
 
     public void addCatToHand(ArrayList<Card> cat) {
-        ArrayList<Card> playersHand = Hand.playersHand;
         playersHand.addAll(cat);
     }
 
     public void passCards(ArrayList<Card> passedCards) {
-        ArrayList<Card> playersHand = Hand.playersHand;
         playersHand.removeAll(passedCards);
     }
 
     public void takeCards(ArrayList<Card> passedCards) {
-        ArrayList<Card> playersHand = Hand.playersHand;
         playersHand.addAll(passedCards);
+    }
+
+    public void addCard( Card card) {
+        playersHand.add(card);
+    }
+
+    //method to handle when players discard from original hand of 12 down to 6 card-->activeHand
+    //cards discarded are simply deleted (go to garbage pile)
+    public void discardCard(Card card) {
+        playersHand.remove(card);
+    }
+
+    //method to handle when a player lays down a card to play during active round of play-->card returned will go into the Trick
+    //class
+    public Card playCard(Player player, Card card) {
+        playersHand.remove(card);
+        return card;
     }
 }
