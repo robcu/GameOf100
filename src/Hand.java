@@ -13,7 +13,6 @@ public class Hand {
 
     public void addCard( Card card) {
 
-        playersHand = Player.getHand();
         playersHand.add(card);
     }
 
@@ -21,16 +20,14 @@ public class Hand {
     //cards discarded are simply deleted (go to garbage pile)
     public void discardCard(Card card) {
 
-        playersHand = getHand();
         playersHand.remove(card);
 
     }
 
     //method to handle when a player lays down a card to play during active round of play-->card returned will go into the Trick
     //class
-    public Card playCard( Card card) {
+    public Card playCard(Player player, Card card) {
 
-           playersHand = getHand();
            playersHand.remove(card);
 
            return card;
