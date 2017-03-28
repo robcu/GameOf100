@@ -11,30 +11,32 @@ public class Hand {
     ArrayList<Card> playersHand = new ArrayList<>();
 
 
-    public void addCard(Player player, Card card) {
+    public void addCard( Card card) {
 
-        playersHand = player.getHand();
+        playersHand = getHand();
         playersHand.add(card);
     }
 
     //method to handle when players discard from original hand of 12 down to 6 card-->activeHand
     //cards discarded are simply deleted (go to garbage pile)
-    public void discardCard(Player player, Card card) {
+    public void discardCard(Card card) {
 
-        playersHand = player.getHand();
+        playersHand = getHand();
         playersHand.remove(card);
 
     }
 
     //method to handle when a player lays down a card to play during active round of play-->card returned will go into the Trick
     //class
-    public Card playCard(Player player, Card card) {
+    public Card playCard( Card card) {
 
-           playersHand = player.getHand();
+           playersHand = getHand();
            playersHand.remove(card);
 
            return card;
 
     }
+
+
 
 }
