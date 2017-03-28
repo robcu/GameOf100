@@ -1,5 +1,14 @@
-body {
+/*body {
     background-image: url("assets/cards/background_felt.png");
+}*/
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    margin: 10px;
+}
+table th, table td {
+    padding: 2px; /* Apply cell padding */
+    text-align: center;
 }
 .card {
     height: 100px;
