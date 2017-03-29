@@ -1,7 +1,7 @@
-object Team {
-  val players: List[String]
-  def teamNumber(): Int
-}
+//object Team {
+//  val players: List[String]
+//  def teamNumber(): Int
+//}
 
 class ScoreBoard (bid, bidWinner, teamOneScore, teamTwoScore, bidWinningTeam) {
 
