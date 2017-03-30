@@ -3,34 +3,32 @@ import java.util.Collections;
 import java.util.Random;
 
 public class Deck {
-    private ArrayList<Card> deck;
+    private static ArrayList<Card> deck;
 
-//   public ArrayList<Card> generateDeck() {
-//        while (deck.size() < 53) {
-//            for (int i = 0; i < 4; i++)
-//                for (int k = 0; k < 13; k++) {
-//
-//                    }
-//                }
-//        }
-//        return deck;
-//   }
+    public static void create() {
+        deck.clear();
+        for (int suit = 1; suit <= 4; suit++) {
+            for (int rank = 1; rank <= 13; rank++) {
+                deck.add(new Card(suit, rank));
+            }
+        }
+        deck.add(new Card(0, 0));
+        shuffle();
+    }
 
-    public ArrayList<Card> shuffle() {               //should this take ArrayList<Card> as param?
+    private static void shuffle() {
         long seed = System.nanoTime();
         Collections.shuffle(deck, new Random(seed));
-        return deck;
     }
 
-    public Card dealOne() {
+    public static Card dealOne() {
         Card card = deck.get(0);
-        //deck.subList(0, passedInteger)
         deck.remove(0);
-        return card;              //will return null card if deck is empty
+        return card;
     }
 
-    public ArrayList<Card> dealMany(Integer many) {
-        ArrayList<Card> cards = (ArrayList<Card>)deck.subList(0, many - 1);
+    public static ArrayList<Card> dealMany(Integer many) {
+        ArrayList<Card> cards = (ArrayList<Card>) deck.subList(0, many - 1);
         deck.removeAll(cards);
         return cards;
     }
