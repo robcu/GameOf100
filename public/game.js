@@ -1,6 +1,8 @@
+// CHANGE PLAYER NAME TO PLAYER NUMBER
+
 class Player {
-    constructor(name) {
-        this.name = name;
+    constructor(number) {
+        this.number = number;
         this.bid = "--";
     }
 
@@ -31,14 +33,14 @@ class Form {
     submit(url) {
         return new Promise((resolve, reject) => {
             axios.post(url, this.getData())
-                    .then(response => {
-                        this.onSuccess(response.data);
-                        resolve(response.data);
-                    })
-                    .catch(error => {
-                        this.onFail(error.data);
-                        reject(error.data);
-                    });
+                .then(response => {
+                    this.onSuccess(response.data);
+                    resolve(response.data);
+                })
+                .catch(error => {
+                    this.onFail(error.data);
+                    reject(error.data);
+                });
         });
     }
 
@@ -271,15 +273,36 @@ Vue.component('banner', {
     }
 });
 
+Vue.component('cat', {
+    template: `
+    <div class="col-md-6 col-md-offset-3" style="background-color: cyan">
+        <card v-for="card in cat" :card="card"></card>
+    </div>
+    `,
+    mounted: function() {
+        axios.get()
+            .then();
+    },
+    data: function() {
+        return {
+
+        };
+    }
+});
+
+Vue.component('card', {
+
+});
+
 new Vue({
     el: '#root',
     data: {
-        stage: "Login",  // Login, Bidding, Reduce, Play
+        stage: "Login", // Login, Bidding, Reduce, Play
         players: {
-            player1: new Player("player1"),
-            player2: new Player("player2"),
-            player3: new Player("player3"),
-            player4: new Player("player4")
+            player1: new Player(1),
+            player2: new Player(2),
+            player3: new Player(3),
+            player4: new Player(4)
         },
         user: undefined,
         currentBidder: undefined,
@@ -288,7 +311,7 @@ new Vue({
         score: {
             team1Score: 0,
             team2Score: 0,
-            roundScores: {}   // Bid, team1 or team2 , score
+            roundScores: {} // Bid, team1 or team2 , score
         }
     },
     computed: {
