@@ -10,9 +10,12 @@ table th, table td {
     padding: 1px; /* Apply cell padding */
     text-align: center;
 }
-.card123 {
+.card {
     height: 100px;
     width: 71px;
+}
+.clickable{
+    cursor: pointer;
 }
 .trump {
     height: 120px;

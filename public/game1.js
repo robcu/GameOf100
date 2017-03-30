@@ -277,30 +277,87 @@ Vue.component('bid-box', {
     }
 });
 
+// I made interactable on for reduce, DIFFERENTIATE FOR REDUCE AND PLAY
 Vue.component('hand', {
+    props: {
+        interactable: {
+            type: Boolean,
+            required: true
+        }
+    },
     template: `
     <div class="row" style="position: absolute; bottom: 0px; width: 1200px">
         <div class="col-md-10 col-md-offset-1" style="background-color: green; padding: 10px 0px 10px 0px">
-            <img v-for="card in hand" :class="card.name" class="card123">
+            <div v-if="interactable">
+                <img v-for="card in hand" :class="card.name" class="card clickable" @click="addToDiscard(card)">
+                <button :disabled="discardIsEmpty" @click="discard()">Discard</button>
+            </div>
+            <img v-else v-for="card in hand" :class="card.name" class="card">
         </div>
     </div>
     `,
     data: function() {
         return {
             hand: [],
-            trump: this.$root.$data.global.trump
+            trump: this.$root.$data.global.trump,
+            discardPile: [],
         };
     },
     mounted: function() {
         axios.get('/hand')
             .then(response => {
-                response.data.hand.forEach(card => {
-                    this.hand.push(new Card(card.name, card.rank, card.suit));
-                });
+                this.loadHand(response.data.hand);
             });
     },
     methods: {
+        addToDiscard: function(card) {
+            var index = this.discardPile.indexOf(card);
+            if (index > -1) {
+                this.discardPile.splice(index, 1);
+            } else {
+                this.discardPile.push(card);
+            }
+        },
+        discard: function() {
+            this.discardPile = [];
+            axios.post('/discard', this.discardPile)
+                .then(response => {
+                    this.loadHand(response.data.hand);
+                });
+        },
+        loadHand: function(hand) {
+            this.hand = [];
+            hand.forEach(card => {
+                this.hand.push(new Card(card.name, card.rank, card.suit));
+            });
+        }
+    },
+    computed: {
+        discardIsEmpty: function() {
+            return this.discardPile.length === 0;
+        }
+    }
+});
 
+Vue.component('cat', {
+    template: `
+    <div class="col-md-6 col-md-offset-3" style="background-color: cyan">
+        <img v-for="card in cat" :class="card.name" class="card">
+    </div>
+    `,
+    mounted: function() {
+        var compThis = this;
+        axios.get('/cat')
+            .then(response => {
+                response.data.cat.forEach(card => {
+                    compThis.cat.push(new Card(card.name, card.rank, card.suit));
+                });
+            });
+    },
+    data: function() {
+        return {
+            cat: []
+        };
     }
 });
 
@@ -421,14 +478,15 @@ var biddingComp = {
             <banner :player="currentBidder"></banner>
             <scoreboard></scoreboard>
             <bid-grid :players="global.players" :currentBidder="currentBidder"></bid-grid>
-            <hand></hand>
+            <hand :interactable="interactable" ></hand>
         </div>
     `,
     data: function() {
         return {
             global: this.$root.$data.global,
             currentBidder: this.$root.$data.global.players[1],
-            bidCheck: undefined // to clear timeout before destroy
+            bidCheck: undefined, // to clear timeout before destroy
+            interactable: false
         };
     },
     mounted: function() {
@@ -446,7 +504,6 @@ var biddingComp = {
                     if (response.data.hasOwnProperty("winner")) {
                         // set leader from bid winner
                         thisComp.global.leader = thisComp.global.players[response.data.winner];
-
                         thisComp.global.stage = "reduce";
                         return;
                     }
@@ -461,6 +518,65 @@ var biddingComp = {
     },
 };
 
+var reduceComp = {
+    template: `
+        <div>
+            <cheat-sheet></cheat-sheet>
+            <banner :player="global.leader" ></banner>
+            <scoreboard></scoreboard>
+            <cat></cat>
+            <hand :interactable="interactable" ></hand>
+            <button @click="postReady" :disabled="ready" >Ready</button>
+        </div>
+    `,
+    data: function() {
+        return {
+            global: this.$root.$data.global,
+            ready: false,
+            waitCheck: undefined, // for clearing timeout on destroy
+            interactable: true
+        };
+    },
+    methods: {
+        postReady: function() {
+            var compThis = this;
+            axios.post('/ready')
+                .then(response => {
+                    compThis.ready = true;
+                    compThis.waitForOthers();
+                })
+                .catch(error => {
+
+                });
+        },
+        waitForOthers: function() {
+            var compThis = this;
+            axios.get('/ready')
+                .then(response => {
+                    if (response.data.ready) {
+                        compThis.global.stage = "play";
+                        return;
+                    }
+                });
+            this.waitCheck = setTimeout(this.waitForOthers, 5000);
+        }
+    },
+    beforeDestroy: function() {
+        clearTimeout(this.waitCheck);
+    }
+};
+
+var playComp = {
+    template: `
+        <div>
+            <cheat-sheet></cheat-sheet>
+            <scoreboard></scoreboard>
+
+            <hand></hand>
+        </div>
+    `
+};
+
 new Vue({
     el: '#root',
     data: {
@@ -469,6 +585,8 @@ new Vue({
     components: {
         login: loginComp,
         connecting: connectingComp,
-        bidding: biddingComp
+        bidding: biddingComp,
+        reduce: reduceComp,
+        play: playComp
     }
 });
