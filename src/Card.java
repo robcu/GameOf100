@@ -8,6 +8,7 @@
 //        2 = 1
 //        Joker = 17 points
 //        All other cards have zero points
+//k, j , 9 , 5, joker
 
 public class Card {
     String name;
